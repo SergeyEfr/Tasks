@@ -3,33 +3,62 @@
 #include"TaskProperties.h"
 #include"TaskProcedures.h"
 #include <memory>
+#include<vector>
+#include <map>
+#include<unordered_map>
+#include <unordered_set>
+#include <hash_map>
 using namespace std;
 
 int main()
 {
-	Priority p2 = Priority::High;
-	Status s2 = Status::Completed;
-	TaskProperties b(2, "Test task", "Test Description", p2, s2);
-
+	
 	string path;
 	cout << "Enter the path to file, where to write the object" << endl;
 	cin >> path;
+
+	unordered_map <Priority, unordered_set<TaskProperties>> priority_map;
+	vector<shared_ptr<TaskProperties>> tasks;
 	ofstream out(path, ios::binary);
-	shared_ptr<TaskProperties> a = make_shared<TaskProperties>(TaskProcedures::taskCreate);
-	TaskProcedures::write(out, a);
+	int f = 0;
+	while (f != 2)
+	{
+
+		cout<<"Enter 1 for Creating of the Task and 2 to Exit from The Program: \n";
+		cin >> f;
+		if (f == 1)
+		{
+			
+			shared_ptr<TaskProperties> a = TaskProcedures::taskCreate();
+			tasks.push_back(a);
+			TaskProcedures::write(out, a);
+			
+		}
+	}
 	out.close();
 
-	cout << "Enter the path to file, from where the object is being read" << endl;
-	cin >> path;
+	vector<shared_ptr<TaskProperties>> test_tasks;
 	ifstream in(path, ios::binary);
-	TaskProcedures::read(in, b);
+	while (!in.eof())
+	{
+		Priority p2 = Priority::High;
+		Status s2 = Status::Completed;
+		shared_ptr<TaskProperties> b = make_shared<TaskProperties>(2, "Test Task", "Test Description", p2, s2);
+		TaskProcedures::read(in, b);
+		test_tasks.push_back(b);
+	}
 	in.close();
 
-	cout << "b.task_id: " << b.task_id << endl;
-	cout << "b.header: " << b.header << endl;
-	cout << "b.description: " << b.description << endl;
-	cout << "b.priority: " << b.priority << endl;
-	cout << "b.status: " << b.status << endl;
+	for (shared_ptr<TaskProperties> task : test_tasks)
+	{
+		cout << "id: " << task->task_id << endl;
+		cout << "header: " << task->header << endl;
+		cout << "description: " << task->description << endl;
+		cout << "priority: " << task->priority << endl;
+		cout << "status: " << task->status << endl;
+	}
+	
+	
 
 	return 0;
 }
