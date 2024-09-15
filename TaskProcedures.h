@@ -23,4 +23,7 @@ public:
 	void taskEdit();
 	void allTasksOutput();
 	void tasksFilter();
+	void taskSearch();
+	void taskHeaderContentSearch();
+	void taskDescriptionContentSearch();
 };

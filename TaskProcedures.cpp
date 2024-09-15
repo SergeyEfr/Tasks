@@ -1,4 +1,5 @@
 #include"TaskProcedures.h"
+#include <string_view>
 
 istream& operator >> (istream& is, Priority& p)
 {
@@ -233,7 +234,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		 {
 			 cout << *it << "\n";
 			 auto task = tasks[*it];
-			 cout << "The Task with id " << *it << endl;
+			 cout << "id " << *it << endl;
 			 cout << "Header: " << task->header << endl;
 			 cout << "Description: " << task->description << endl;
 			 cout << "Status: " << task->status << endl;
@@ -253,11 +254,69 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		 {
 			 cout << *it << "\n";
 			 auto task = tasks[*it];
-			 cout << "The Task with id " << *it << endl;
+			 cout << "id " << *it << endl;
 			 cout << "Header: " << task->header << endl;
 			 cout << "Description: " << task->description << endl;
 			 cout << "Status: " << task->status << endl;
 			 cout << "Priority: " << task->priority << endl;
+		 }
+	 }
+ }
+
+ void TaskProcedures::taskSearch()
+ {
+	 cout << "Enter id for Searh of Task: " << endl;
+	 size_t id = 0;
+	 cin.ignore();
+	 cin >> id;
+	 cout << "Task with id " << id << ":\n";
+	 cout << "Header: " << tasks[id]->header << endl;
+	 cout << "Description: " << tasks[id]->description << endl;
+	 cout << "Status: " << tasks[id]->status << endl;
+	 cout << "Priority: " << tasks[id]->priority << endl;
+
+ }
+
+ void TaskProcedures::taskHeaderContentSearch()
+ {
+	 cout << "Enter header content for Search of Task: " << endl;
+	 string content;
+	 cin.ignore();
+	 getline(cin, content);
+	 
+	 for (auto element : tasks)
+	 {
+		 string text = element.second->header;
+		 if (text.find(content) != string::npos)
+		 {
+			 cout << "Task with header content \"" << content << "\":\n";
+			 cout << "id: " << element.second->task_id << endl;
+			 cout << "Header: " << element.second->header << endl;
+			 cout << "Description: " << element.second->description << endl;
+			 cout << "Status: " << element.second->status << endl;
+			 cout << "Priority: " << element.second->priority << endl;
+		 }
+	 }
+ }
+
+ void TaskProcedures::taskDescriptionContentSearch()
+ {
+	 cout << "Enter description content for Search of Task: " << endl;
+	 string content;
+	 cin.ignore();
+	 getline(cin, content);
+
+	 for (auto element : tasks)
+	 {
+		 string text = element.second->header;
+		 if (text.find(content) != string::npos)
+		 {
+			 cout << "Task with description content \"" << content << "\":\n";
+			 cout << "id: " << element.second->task_id << endl;
+			 cout << "Header: " << element.second->header << endl;
+			 cout << "Description: " << element.second->description << endl;
+			 cout << "Status: " << element.second->status << endl;
+			 cout << "Priority: " << element.second->priority << endl;
 		 }
 	 }
  }
