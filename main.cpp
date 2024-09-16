@@ -48,7 +48,7 @@ int main()
 	{
 		cout<<"Enter:\n 1 for Creating of the Task\n 2 to Exit from The Program\n 3 for erasing of the Task\
         \n 4 for the task edit\n 5 for Output of all Tasks\n 6 for Output Tasks with Filter\n 7 for Search of Task with id\
-        \n 8 for Task Header Content Search:\n ";
+        \n 8 for Task Header Content Search\n 9 for Task Description Content Search:\n";
 		cin >> f;
 		if (f == 1)
 		{
@@ -78,6 +78,10 @@ int main()
 		else if (f == 8)
 		{
 			proc->taskHeaderContentSearch();
+		}
+		else if (f == 9)
+		{
+			proc->taskDescriptionContentSearch();
 		}
 	}
 

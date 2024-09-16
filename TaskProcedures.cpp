@@ -122,7 +122,18 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 {
 	unsigned int id;
 	cout << "Enter task_id: " << endl;
-	cin >> id;
+	while (true)
+	{
+		cin >> id;
+		if (tasks.count(id) != 0)
+		{
+			cout << "There is alredy such an id! Enter another id: " << endl;
+		}
+		else
+		{
+			break;
+		}
+	}
 	cout << endl;
 	cin.ignore();
 	string header;
@@ -147,7 +158,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
  void TaskProcedures::taskCreateAction()
  {
 
-	 shared_ptr<TaskProperties> a = TaskProcedures::taskCreate();
+	 shared_ptr<TaskProperties> a = taskCreate();
 	 tasks.insert({ a->task_id, a });
  }
 
@@ -308,7 +319,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 
 	 for (auto element : tasks)
 	 {
-		 string text = element.second->header;
+		 string text = element.second->description;
 		 if (text.find(content) != string::npos)
 		 {
 			 cout << "Task with description content \"" << content << "\":\n";

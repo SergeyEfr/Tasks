@@ -17,7 +17,7 @@ public:
 
     ostream& write(ostream& os, const shared_ptr <TaskProperties> obj);
 	bool read(istream& is, const shared_ptr <TaskProperties> obj);
-	static shared_ptr<TaskProperties> taskCreate();
+	shared_ptr<TaskProperties> taskCreate();
 	void taskCreateAction();
 	void taskErasing();
 	void taskEdit();
