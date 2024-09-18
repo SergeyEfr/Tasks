@@ -17,10 +17,6 @@ istream& operator >> (istream& is, Priority& p)
 	{
 		p= Priority::High;
 	}
-	else
-	{
-		cout << "Enter the correct priority!";
-	}
 	return is;
 }
 
@@ -40,13 +36,30 @@ istream& operator >> (istream& is, Status& f)
 	{
 		f = Status::Completed;
 	}
-	else
-	{
-		cout << "Enter the correct priority!";
-	}
 	return is;
 }
 
+ostream& operator << (ostream& os, const Priority& p)
+{
+	switch (p)
+	{
+	case 0: {os << "Low"; break; }
+	case 1: {os << "Medium"; break; }
+	case 2: {os << "High"; break; }
+	}
+	return os;
+}
+
+ostream& operator << (ostream& os, const Status& p)
+{
+	switch (p)
+	{
+	case 0: {os << "Opened"; break; }
+	case 1: {os << "InWork"; break; }
+	case 2: {os << "Completed"; break; }
+	}
+	return os;
+}
 
 ostream& TaskProcedures::write(ostream& os, const shared_ptr <TaskProperties> obj)
 
@@ -144,10 +157,10 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	getline(cin, description);
 	cin.clear();
 	Priority p;
-	cout << "Enter priority: ";
+	cout << "Enter priority(\"Low\", \"Medium\", \"High\"): ";
 	cin >> p;
 	cin.clear();
-	cout << "Enter status: ";
+	cout << "Enter status(\"Opened\", \"InWork\", \"Completed\"): ";
 	cin.clear();
 	Status s;
 	cin >> s;
@@ -160,6 +173,8 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 
 	 shared_ptr<TaskProperties> a = taskCreate();
 	 tasks.insert({ a->task_id, a });
+	 status_map[a->status].insert(a->task_id);
+	 priority_map[a->priority].insert(a->task_id);
  }
 
  void TaskProcedures::taskErasing()
@@ -169,6 +184,18 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 cin.clear();
 	 cin >> id;
 	 tasks.erase(id);
+
+	 priority_map.clear();
+	 for (auto element : tasks)
+	 {
+		 priority_map[element.second->priority].insert(element.second->task_id);
+	 }
+
+	 status_map.clear();
+	 for (auto element : tasks)
+	 {
+		 status_map[element.second->status].insert(element.second->task_id);
+	 }
  }
 
  void TaskProcedures::taskEdit()
@@ -204,6 +231,12 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		 Priority p;
 		 cin >> p;
 		 tasks[id]->priority = p;
+
+		 priority_map.clear();
+		 for (auto element : tasks)
+		 {
+			 priority_map[element.second->priority].insert(element.second->task_id);
+		 }
 	 }
 	 else if(field == "status")
 	 {
@@ -212,6 +245,12 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		 Status s;
 		 cin >> s;
 		 tasks[id]->status = s;
+
+		 status_map.clear();
+		 for (auto element : tasks)
+		 {
+			 status_map[element.second->status].insert(element.second->task_id);
+		 }
 	 }
  }
 
@@ -330,5 +369,15 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 			 cout << "Priority: " << element.second->priority << endl;
 		 }
 	 }
+ }
+
+ void TaskProcedures::tasksChangeSave(string path)
+ {
+	 ofstream out(path, ios::binary);
+	 for (auto element : tasks)
+	 {
+		 write(out, element.second);
+	 }
+	 out.close();
  }
 

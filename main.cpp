@@ -32,16 +32,7 @@ int main()
 		proc->priority_map[b->priority].insert(b->task_id);
 	}
 	in.close();
-
-	for (auto element : proc->tasks)
-	{
-		cout << "id: " << element.second->task_id << endl;
-		cout << "header: " << element.second->header << endl;
-		cout << "description: " << element.second->description << endl;
-		cout << "priority: " << element.second->priority << endl;
-		cout << "status: " << element.second->status << endl;
-	}
-
+	proc->allTasksOutput();
 	
 	int f = 0;
 	while (f != 2)
@@ -53,15 +44,17 @@ int main()
 		if (f == 1)
 		{
 			proc->taskCreateAction();
+			proc->tasksChangeSave(path);
 		}
 		else if (f == 3)
 		{
 			proc->taskErasing();
-			
+			proc->tasksChangeSave(path);
 		}
 		else if (f == 4)
 		{
 			proc->taskEdit();
+			proc->tasksChangeSave(path);
 		}
 		else if (f == 5)
 		{
@@ -84,13 +77,7 @@ int main()
 			proc->taskDescriptionContentSearch();
 		}
 	}
-
-	ofstream out(path, ios::binary);
-	for (auto element : proc->tasks)
-	{
-		proc->write(out, element.second);
-	}
-	out.close();
-
+	proc->tasksChangeSave(path);
+	
 	return 0;
 }
