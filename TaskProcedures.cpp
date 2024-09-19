@@ -4,18 +4,28 @@
 istream& operator >> (istream& is, Priority& p)
 {
 	string s = "";
-	is >> s;
-	if (s == "Low")
+	while (true)
 	{
-		p= Priority::Low;
-	}
-	else if (s == "Medium")
-	{
-		p= Priority::Medium;
-	}
-	else if (s == "High")
-	{
-		p= Priority::High;
+		is >> s;
+		if (s == "Low")
+		{
+			p = Priority::Low;
+			break;
+		}
+		else if (s == "Medium")
+		{
+			p = Priority::Medium;
+			break;
+		}
+		else if (s == "High")
+		{
+			p = Priority::High;
+			break;
+		}
+		else
+		{
+			cout << "Enter a correct priority: " << endl;
+		}
 	}
 	return is;
 }
@@ -23,18 +33,28 @@ istream& operator >> (istream& is, Priority& p)
 istream& operator >> (istream& is, Status& f)
 {
 	string s = "";
-	is >> s;
-	if (s == "Opened")
+	while (true)
 	{
-		f = Status::Opened;
-	}
-	else if (s == "InWork")
-	{
-		f = Status::InWork;
-	}
-	else if (s == "Completed")
-	{
-		f = Status::Completed;
+		is >> s;
+		if (s == "Opened")
+		{
+			f = Status::Opened;
+			break;
+		}
+		else if (s == "InWork")
+		{
+			f = Status::InWork;
+			break;
+		}
+		else if (s == "Completed")
+		{
+			f = Status::Completed;
+			break;
+		}
+		else
+		{
+			cout << "Enter a correct status: " << endl;
+		}
 	}
 	return is;
 }
@@ -183,7 +203,10 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 cout << "Enter id of the Task for erasing: " << endl;
 	 cin.clear();
 	 cin >> id;
-	 tasks.erase(id);
+	 if (!tasks.erase(id))
+	 {
+		 cout << "A task with such an id does not exist!" << endl;
+	 }
 
 	 priority_map.clear();
 	 for (auto element : tasks)
@@ -226,7 +249,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 }
 	 else if (field == "priority")
 	 {
-		 cin.ignore();
+		 cin.clear();
 		 cout << "Enter new priority: " << endl;
 		 Priority p;
 		 cin >> p;
@@ -240,7 +263,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 }
 	 else if(field == "status")
 	 {
-		 cin.ignore();
+		 cin.clear();
 		 cout << "Enter new status: " << endl;
 		 Status s;
 		 cin >> s;
@@ -251,6 +274,10 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		 {
 			 status_map[element.second->status].insert(element.second->task_id);
 		 }
+	 }
+	 else
+	 {
+		 cout << "You introduced a wrong property!" << endl;
 	 }
  }
 
@@ -311,6 +338,10 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 			 cout << "Priority: " << task->priority << endl;
 		 }
 	 }
+	 else
+	 {
+		 cout << "You  introduced a wrong Number!" << endl;
+	 }
  }
 
  void TaskProcedures::taskSearch()
@@ -319,12 +350,18 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 size_t id = 0;
 	 cin.ignore();
 	 cin >> id;
-	 cout << "Task with id " << id << ":\n";
-	 cout << "Header: " << tasks[id]->header << endl;
-	 cout << "Description: " << tasks[id]->description << endl;
-	 cout << "Status: " << tasks[id]->status << endl;
-	 cout << "Priority: " << tasks[id]->priority << endl;
-
+	 if (tasks.count(id) == 0)
+	 {
+		 cout << "A task with a such id does not exist!" << endl;
+	 }
+	 else
+	 {
+		 cout << "Task with id " << id << ":\n";
+		 cout << "Header: " << tasks[id]->header << endl;
+		 cout << "Description: " << tasks[id]->description << endl;
+		 cout << "Status: " << tasks[id]->status << endl;
+		 cout << "Priority: " << tasks[id]->priority << endl;
+	 }
  }
 
  void TaskProcedures::taskHeaderContentSearch()
@@ -333,12 +370,13 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 string content;
 	 cin.ignore();
 	 getline(cin, content);
-	 
+	 int flag = 0;
 	 for (auto element : tasks)
 	 {
 		 string text = element.second->header;
 		 if (text.find(content) != string::npos)
 		 {
+			 flag = 1;
 			 cout << "Task with header content \"" << content << "\":\n";
 			 cout << "id: " << element.second->task_id << endl;
 			 cout << "Header: " << element.second->header << endl;
@@ -346,6 +384,10 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 			 cout << "Status: " << element.second->status << endl;
 			 cout << "Priority: " << element.second->priority << endl;
 		 }
+	 }
+	 if (flag == 0)
+	 {
+		 cout << "Content with a such Header does not exist!" << endl;
 	 }
  }
 
@@ -355,12 +397,13 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 string content;
 	 cin.ignore();
 	 getline(cin, content);
-
+	 int flag = 0;
 	 for (auto element : tasks)
 	 {
 		 string text = element.second->description;
 		 if (text.find(content) != string::npos)
 		 {
+			 flag = 1;
 			 cout << "Task with description content \"" << content << "\":\n";
 			 cout << "id: " << element.second->task_id << endl;
 			 cout << "Header: " << element.second->header << endl;
@@ -368,6 +411,10 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 			 cout << "Status: " << element.second->status << endl;
 			 cout << "Priority: " << element.second->priority << endl;
 		 }
+	 }
+	 if (flag == 0)
+	 {
+		 cout << "Content with a such Description does not exist!" << endl;
 	 }
  }
 
