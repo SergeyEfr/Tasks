@@ -27,4 +27,5 @@ public:
 	void taskHeaderContentSearch();
 	void taskDescriptionContentSearch();
 	void tasksChangeSave(string path);
+	
 };

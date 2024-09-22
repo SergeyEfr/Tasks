@@ -59,28 +59,6 @@ istream& operator >> (istream& is, Status& f)
 	return is;
 }
 
-ostream& operator << (ostream& os, const Priority& p)
-{
-	switch (p)
-	{
-	case 0: {os << "Low"; break; }
-	case 1: {os << "Medium"; break; }
-	case 2: {os << "High"; break; }
-	}
-	return os;
-}
-
-ostream& operator << (ostream& os, const Status& p)
-{
-	switch (p)
-	{
-	case 0: {os << "Opened"; break; }
-	case 1: {os << "InWork"; break; }
-	case 2: {os << "Completed"; break; }
-	}
-	return os;
-}
-
 ostream& TaskProcedures::write(ostream& os, const shared_ptr <TaskProperties> obj)
 
 {
@@ -206,6 +184,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 if (!tasks.erase(id))
 	 {
 		 cout << "A task with such an id does not exist!" << endl;
+		 return;
 	 }
 
 	 priority_map.clear();
@@ -286,14 +265,11 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 cout << "All Tasks: \n";
 	 for (auto element : tasks)
 	 {
-		 cout << "The Task with id " << element.second->task_id << ":\n";
-		 cout << "Header: " << element.second->header << endl;
-		 cout << "Description: " << element.second->description << endl;
-		 cout << "Status: " << element.second->status << endl;
-		 cout << "Priority: " << element.second->priority << endl;
+		 element.second->TaskShow();
 		 cout << "\n";
 	 }
  }
+
  void TaskProcedures::tasksFilter()
  {
 	 cout<<"Enter 1 for task filter with status and enter 2 for task filter with priority: " << endl;
@@ -311,11 +287,8 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		 {
 			 cout << *it << "\n";
 			 auto task = tasks[*it];
-			 cout << "id " << *it << endl;
-			 cout << "Header: " << task->header << endl;
-			 cout << "Description: " << task->description << endl;
-			 cout << "Status: " << task->status << endl;
-			 cout << "Priority: " << task->priority << endl;
+			 task->TaskShow();
+			
 		 }
 	 }
 	 else if (f == 1)
@@ -331,11 +304,8 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		 {
 			 cout << *it << "\n";
 			 auto task = tasks[*it];
-			 cout << "id " << *it << endl;
-			 cout << "Header: " << task->header << endl;
-			 cout << "Description: " << task->description << endl;
-			 cout << "Status: " << task->status << endl;
-			 cout << "Priority: " << task->priority << endl;
+			 task->TaskShow();
+			 
 		 }
 	 }
 	 else
@@ -356,11 +326,12 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 }
 	 else
 	 {
-		 cout << "Task with id " << id << ":\n";
+		 tasks[id]->TaskShow();
+		 /*cout << "Task with id " << id << ":\n";
 		 cout << "Header: " << tasks[id]->header << endl;
 		 cout << "Description: " << tasks[id]->description << endl;
 		 cout << "Status: " << tasks[id]->status << endl;
-		 cout << "Priority: " << tasks[id]->priority << endl;
+		 cout << "Priority: " << tasks[id]->priority << endl;*/
 	 }
  }
 
@@ -377,12 +348,8 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		 if (text.find(content) != string::npos)
 		 {
 			 flag = 1;
-			 cout << "Task with header content \"" << content << "\":\n";
-			 cout << "id: " << element.second->task_id << endl;
-			 cout << "Header: " << element.second->header << endl;
-			 cout << "Description: " << element.second->description << endl;
-			 cout << "Status: " << element.second->status << endl;
-			 cout << "Priority: " << element.second->priority << endl;
+			 element.second->TaskShow();
+			 
 		 }
 	 }
 	 if (flag == 0)
@@ -404,12 +371,8 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		 if (text.find(content) != string::npos)
 		 {
 			 flag = 1;
-			 cout << "Task with description content \"" << content << "\":\n";
-			 cout << "id: " << element.second->task_id << endl;
-			 cout << "Header: " << element.second->header << endl;
-			 cout << "Description: " << element.second->description << endl;
-			 cout << "Status: " << element.second->status << endl;
-			 cout << "Priority: " << element.second->priority << endl;
+			 element.second->TaskShow();
+			 
 		 }
 	 }
 	 if (flag == 0)

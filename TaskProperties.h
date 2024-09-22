@@ -5,6 +5,8 @@ using namespace std;
 
 enum Priority { Low, Medium, High };
 enum Status {Opened, InWork, Completed };
+ostream& operator << (ostream& os, const Priority& p);
+ostream& operator << (ostream& os, const Status& p);
 class TaskProperties
 {
 public:
@@ -14,5 +16,7 @@ public:
 	string description;
 	Priority priority;
 	Status status;
+	
+	void TaskShow();
 	
 };
