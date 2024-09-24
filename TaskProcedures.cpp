@@ -1,5 +1,5 @@
 #include"TaskProcedures.h"
-#include <string_view>
+#include <string>
 
 istream& operator >> (istream& is, Priority& p)
 {
@@ -90,13 +90,18 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		return false;
 	}
 	try {
-		char* buf = new char[s];
+		obj->header.resize(s);
+		if (!is.read(&obj->header[0], s))
+		{
+			return false;
+		}
+		/*char* buf = new char[s];
 		if (!is.read(buf, s))
 		{
 			return false;
 		}
 		obj->header.assign(buf, buf + s);
-		delete[] buf;
+		delete[] buf;*/
 	}
 	catch (bad_alloc& exception) {
 		cerr << "bad_alloc detected: " << exception.what();
@@ -327,11 +332,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 else
 	 {
 		 tasks[id]->TaskShow();
-		 /*cout << "Task with id " << id << ":\n";
-		 cout << "Header: " << tasks[id]->header << endl;
-		 cout << "Description: " << tasks[id]->description << endl;
-		 cout << "Status: " << tasks[id]->status << endl;
-		 cout << "Priority: " << tasks[id]->priority << endl;*/
+		 
 	 }
  }
 
