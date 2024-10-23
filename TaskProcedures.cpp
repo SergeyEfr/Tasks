@@ -95,13 +95,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		{
 			return false;
 		}
-		/*char* buf = new char[s];
-		if (!is.read(buf, s))
-		{
-			return false;
-		}
-		obj->header.assign(buf, buf + s);
-		delete[] buf;*/
+		
 	}
 	catch (bad_alloc& exception) {
 		cerr << "bad_alloc detected: " << exception.what();
@@ -112,13 +106,11 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		return false;
 	}
 	try {
-		char* buf = new char[s];
-		if (!is.read(buf, s))
+		obj->description.resize(s);
+		if (!is.read(&obj->description[0], s))
 		{
 			return false;
 		}
-		obj->description.assign(buf, buf + s);
-		delete[] buf;
 	}
 	catch (bad_alloc& exception) {
 		cerr << "bad_alloc detected: " << exception.what();
@@ -186,23 +178,23 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 cout << "Enter id of the Task for erasing: " << endl;
 	 cin.clear();
 	 cin >> id;
-	 if (!tasks.erase(id))
+	 auto it = tasks.find(id);
+	 if (it == tasks.end())
 	 {
 		 cout << "A task with such an id does not exist!" << endl;
 		 return;
 	 }
-
-	 priority_map.clear();
-	 for (auto element : tasks)
+	 else 
 	 {
-		 priority_map[element.second->priority].insert(element.second->task_id);
-	 }
+		 Status status = tasks[id]->status;
+		 Priority priority = tasks[id]->priority;
 
-	 status_map.clear();
-	 for (auto element : tasks)
-	 {
-		 status_map[element.second->status].insert(element.second->task_id);
+		 status_map[status].erase(id);
+		 priority_map[priority].erase(id);
+		 tasks.erase(id);
 	 }
+	 
+
  }
 
  void TaskProcedures::taskEdit()
@@ -211,6 +203,13 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 cout << "Enter id of the Task for Edit: " << endl;
 	 cin.clear();
 	 cin >> id;
+
+	 auto it = tasks.find(id);
+	 if (it == tasks.end())
+	 {
+		 cout << "A task with such an id does not exist!" << endl;
+		 return;
+	 }
 	 cin.clear();
 	 string field;
 	 cout << "Enter one of the properties to edit:\n \"header\", \"description\", \"priority\", \"status\" " << endl;
@@ -235,29 +234,32 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 {
 		 cin.clear();
 		 cout << "Enter new priority: " << endl;
-		 Priority p;
-		 cin >> p;
-		 tasks[id]->priority = p;
+		 Priority new_priority;
+		 cin >> new_priority;
+         Priority priority = tasks[id]->priority;
 
-		 priority_map.clear();
-		 for (auto element : tasks)
+		 if (priority != new_priority)
 		 {
-			 priority_map[element.second->priority].insert(element.second->task_id);
+			 priority_map[priority].erase(id);
+			 priority_map[new_priority].insert(id);
 		 }
+		 tasks[id]->priority = new_priority;
 	 }
 	 else if(field == "status")
 	 {
 		 cin.clear();
 		 cout << "Enter new status: " << endl;
-		 Status s;
-		 cin >> s;
-		 tasks[id]->status = s;
-
-		 status_map.clear();
-		 for (auto element : tasks)
+		 Status new_status;
+		 cin >> new_status;
+		 Status status = tasks[id]->status;
+		 
+		 if (status != new_status)
 		 {
-			 status_map[element.second->status].insert(element.second->task_id);
+			 status_map[status].erase(id);
+			 status_map[new_status].insert(id);
 		 }
+		 tasks[id]->status = new_status;
+
 	 }
 	 else
 	 {
@@ -325,13 +327,14 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 size_t id = 0;
 	 cin.ignore();
 	 cin >> id;
-	 if (tasks.count(id) == 0)
+	 auto it = tasks.find(id);
+	 if (it == tasks.end())
 	 {
 		 cout << "A task with a such id does not exist!" << endl;
 	 }
 	 else
 	 {
-		 tasks[id]->TaskShow();
+		 it->second->TaskShow();
 		 
 	 }
  }
@@ -342,18 +345,18 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 string content;
 	 cin.ignore();
 	 getline(cin, content);
-	 int flag = 0;
+	 bool flag = false;
 	 for (auto element : tasks)
 	 {
 		 string text = element.second->header;
 		 if (text.find(content) != string::npos)
 		 {
-			 flag = 1;
+			 flag = true;
 			 element.second->TaskShow();
 			 
 		 }
 	 }
-	 if (flag == 0)
+	 if (flag == false)
 	 {
 		 cout << "Content with a such Header does not exist!" << endl;
 	 }
@@ -365,24 +368,24 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 string content;
 	 cin.ignore();
 	 getline(cin, content);
-	 int flag = 0;
+	 bool flag = false;
 	 for (auto element : tasks)
 	 {
 		 string text = element.second->description;
 		 if (text.find(content) != string::npos)
 		 {
-			 flag = 1;
+			 flag = true;
 			 element.second->TaskShow();
 			 
 		 }
 	 }
-	 if (flag == 0)
+	 if (flag == false)
 	 {
 		 cout << "Content with a such Description does not exist!" << endl;
 	 }
  }
 
- void TaskProcedures::tasksChangeSave(string path)
+ void TaskProcedures::tasksChangeSave()
  {
 	 ofstream out(path, ios::binary);
 	 for (auto element : tasks)
@@ -390,5 +393,25 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		 write(out, element.second);
 	 }
 	 out.close();
+ }
+
+ void TaskProcedures::tasksReading()
+ {
+	 cout << "Enter the path to file, where to write the object" << endl;
+	 cin >> path;
+	 ifstream in(path, ios::binary);
+	 while (true)
+	 {
+		 shared_ptr<TaskProperties> b = make_shared<TaskProperties>();
+		 if (!read(in, b))
+		 {
+			 break;
+		 }
+		 tasks.insert({ b->task_id, b });
+		 status_map[b->status].insert(b->task_id);
+		 priority_map[b->priority].insert(b->task_id);
+	 }
+	 in.close();
+	 allTasksOutput();
  }
 

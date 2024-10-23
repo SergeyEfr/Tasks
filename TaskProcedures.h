@@ -14,6 +14,7 @@ public:
 	unordered_map <size_t, shared_ptr<TaskProperties>> tasks;
 	unordered_map <Status, unordered_set<size_t>> status_map;
 	unordered_map <Priority, unordered_set <size_t>> priority_map;
+	string path;
 
     ostream& write(ostream& os, const shared_ptr <TaskProperties> obj);
 	bool read(istream& is, const shared_ptr <TaskProperties> obj);
@@ -26,6 +27,6 @@ public:
 	void taskSearch();
 	void taskHeaderContentSearch();
 	void taskDescriptionContentSearch();
-	void tasksChangeSave(string path);
-	
+	void tasksChangeSave();
+	void tasksReading();
 };

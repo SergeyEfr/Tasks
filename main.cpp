@@ -11,28 +11,8 @@ using namespace std;
 int main()
 {
 	
-	string path;
-	cout << "Enter the path to file, where to write the object" << endl;
-	cin >> path;
 	TaskProcedures* proc = new TaskProcedures();
-	
-	ifstream in(path, ios::binary);
-	while (true)
-	{
-
-		Priority p2 = Priority::High;
-		Status s2 = Status::Completed;
-		shared_ptr<TaskProperties> b = make_shared<TaskProperties>(2, "Test Task", "Test Description", p2, s2);
-		if (!proc->read(in, b))
-		{
-			break;
-		}
-		proc->tasks.insert({ b->task_id, b });
-		proc->status_map[b->status].insert(b->task_id);
-		proc->priority_map[b->priority].insert(b->task_id);
-	}
-	in.close();
-	proc->allTasksOutput();
+	proc->tasksReading();
 	
 	int f = 0;
 	while (f != 2)
@@ -44,17 +24,17 @@ int main()
 		if (f == 1)
 		{
 			proc->taskCreateAction();
-			proc->tasksChangeSave(path);
+			proc->tasksChangeSave();
 		}
 		else if (f == 3)
 		{
 			proc->taskErasing();
-			proc->tasksChangeSave(path);
+			proc->tasksChangeSave();
 		}
 		else if (f == 4)
 		{
 			proc->taskEdit();
-			proc->tasksChangeSave(path);
+			proc->tasksChangeSave();
 		}
 		else if (f == 5)
 		{
@@ -77,7 +57,7 @@ int main()
 			proc->taskDescriptionContentSearch();
 		}
 	}
-	proc->tasksChangeSave(path);
+	proc->tasksChangeSave();
 	
 	return 0;
 }

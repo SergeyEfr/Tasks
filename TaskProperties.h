@@ -11,6 +11,7 @@ class TaskProperties
 {
 public:
 	TaskProperties(unsigned int id, const char* h, const char* d, Priority& p, Status& s) : task_id(id), header(h), description(d), priority(p), status(s) {};
+	TaskProperties() : task_id(0), header(""), description(""), priority(Low), status(Opened) {}
 	size_t task_id;
 	string header;
 	string description;
@@ -20,3 +21,4 @@ public:
 	void TaskShow();
 	
 };
+

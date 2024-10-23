@@ -24,10 +24,10 @@ ostream& operator << (ostream& os, const Status& p)
 
 void TaskProperties::TaskShow()
 {
-	cout << "id: " << this->task_id << endl;
-	cout << "Header: " << this->header << endl;
-	cout << "Description: " << this->description << endl;
-	cout << "Status: " << this->status << endl;
-	cout << "Priority: " << this->priority << endl;
+	cout << "id: " << task_id << endl;
+	cout << "Header: " << header << endl;
+	cout << "Description: " << description << endl;
+	cout << "Status: " << status << endl;
+	cout << "Priority: " << priority << endl;
 }
 
