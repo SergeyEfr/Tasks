@@ -11,8 +11,8 @@ using namespace std;
 int main()
 {
 	
-	TaskProcedures* proc = new TaskProcedures();
-	proc->tasksReading();
+	TaskProcedures proc;
+	proc.tasksReading();
 	
 	int f = 0;
 	while (f != 2)
@@ -23,41 +23,41 @@ int main()
 		cin >> f;
 		if (f == 1)
 		{
-			proc->taskCreateAction();
-			proc->tasksChangeSave();
+			proc.taskCreateAction();
+			proc.tasksChangeSave();
 		}
 		else if (f == 3)
 		{
-			proc->taskErasing();
-			proc->tasksChangeSave();
+			proc.taskErasing();
+			proc.tasksChangeSave();
 		}
 		else if (f == 4)
 		{
-			proc->taskEdit();
-			proc->tasksChangeSave();
+			proc.taskEdit();
+			proc.tasksChangeSave();
 		}
 		else if (f == 5)
 		{
-			proc->allTasksOutput();
+			proc.allTasksOutput();
 		}
 		else if (f == 6)
 		{
-			proc->tasksFilter();
+			proc.tasksFilter();
 		}
 		else if (f == 7)
 		{
-			proc->taskSearch();
+			proc.taskSearch();
 		}
 		else if (f == 8)
 		{
-			proc->taskHeaderContentSearch();
+			proc.taskHeaderContentSearch();
 		}
 		else if (f == 9)
 		{
-			proc->taskDescriptionContentSearch();
+			proc.taskDescriptionContentSearch();
 		}
 	}
-	proc->tasksChangeSave();
+	proc.tasksChangeSave();
 	
 	return 0;
 }

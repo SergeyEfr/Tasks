@@ -186,8 +186,8 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 }
 	 else 
 	 {
-		 Status status = tasks[id]->status;
-		 Priority priority = tasks[id]->priority;
+		 Status status = it->second->status;
+		 Priority priority = it->second->priority;
 
 		 status_map[status].erase(id);
 		 priority_map[priority].erase(id);
