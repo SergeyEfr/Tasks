@@ -22,11 +22,11 @@ public:
 	void taskCreateAction();
 	void taskErasing();
 	void taskEdit();
-	void allTasksOutput();
+	void allTasksOutput() const;
 	void tasksFilter();
-	void taskSearch();
-	void taskHeaderContentSearch();
-	void taskDescriptionContentSearch();
+	void taskSearch() const;
+	void taskHeaderContentSearch() const;
+	void taskDescriptionContentSearch() const;
 	void tasksChangeSave();
 	void tasksReading();
 };

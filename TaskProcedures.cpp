@@ -267,7 +267,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 }
  }
 
- void TaskProcedures::allTasksOutput()
+ void TaskProcedures::allTasksOutput() const
  {
 	 cout << "All Tasks: \n";
 	 for (auto element : tasks)
@@ -277,7 +277,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 }
  }
 
- void TaskProcedures::tasksFilter()
+ void TaskProcedures::tasksFilter() 
  {
 	 cout<<"Enter 1 for task filter with status and enter 2 for task filter with priority: " << endl;
 	 int f = 0;
@@ -321,7 +321,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 }
  }
 
- void TaskProcedures::taskSearch()
+ void TaskProcedures::taskSearch() const
  {
 	 cout << "Enter id for Searh of Task: " << endl;
 	 size_t id = 0;
@@ -339,7 +339,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 }
  }
 
- void TaskProcedures::taskHeaderContentSearch()
+ void TaskProcedures::taskHeaderContentSearch() const
  {
 	 cout << "Enter header content for Search of Task: " << endl;
 	 string content;
@@ -362,7 +362,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 }
  }
 
- void TaskProcedures::taskDescriptionContentSearch()
+ void TaskProcedures::taskDescriptionContentSearch() const
  {
 	 cout << "Enter description content for Search of Task: " << endl;
 	 string content;
