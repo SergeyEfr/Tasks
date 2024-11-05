@@ -22,7 +22,7 @@ ostream& operator << (ostream& os, const Status& p)
 	return os;
 }
 
-void TaskProperties::TaskShow()
+void TaskProperties::TaskShow() const
 {
 	cout << "id: " << task_id << endl;
 	cout << "Header: " << header << endl;

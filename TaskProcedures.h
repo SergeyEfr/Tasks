@@ -23,7 +23,7 @@ public:
 	void taskErasing();
 	void taskEdit();
 	void allTasksOutput() const;
-	void tasksFilter();
+	void tasksFilter() const;
 	void taskSearch() const;
 	void taskHeaderContentSearch() const;
 	void taskDescriptionContentSearch() const;

@@ -56,6 +56,10 @@ int main()
 		{
 			proc.taskDescriptionContentSearch();
 		}
+		else
+		{
+			cout << "You entered an incorrect number! Enter it again";
+		}
 	}
 	proc.tasksChangeSave();
 	

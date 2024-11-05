@@ -18,7 +18,7 @@ public:
 	Priority priority;
 	Status status;
 	
-	void TaskShow();
+	void TaskShow() const;
 	
 };
 

@@ -277,7 +277,7 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 	 }
  }
 
- void TaskProcedures::tasksFilter() 
+ void TaskProcedures::tasksFilter() const
  {
 	 cout<<"Enter 1 for task filter with status and enter 2 for task filter with priority: " << endl;
 	 int f = 0;
@@ -288,12 +288,19 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		 cout << "Enter priority filter(\"Low\", \"Medium\", \"High\"):\n";
 		 Priority p;
 		 cin >> p;
+		 auto map_it = priority_map.find(p);
+		 if (map_it == priority_map.end())
+		 {
+			 cout << "A task with a such priority does not exist! " << endl;
+			 return;
+		 }
 		 cout << "Tasks with priority " << p << ":\n";
-		 auto p_set = priority_map[p];
-		 for (auto it = p_set.begin(); it != p_set.end(); ++it)
+		 
+		 auto set = (*map_it).second;
+		 for (auto it = set.begin(); it != set.end(); ++it)
 		 {
 			 cout << *it << "\n";
-			 auto task = tasks[*it];
+			 auto task = tasks.at(*it);
 			 task->TaskShow();
 			
 		 }
@@ -304,13 +311,19 @@ bool TaskProcedures::read(istream& is, const shared_ptr <TaskProperties> obj)
 		 cout << "Enter status filter(\"Opened\", \"InWork\", \"Completed\"):\n ";
 		 Status s;
 		 cin >> s;
-		 cout << "Tasks with status " << s << ":\n";
-		 auto s_set = status_map[s];
+		 auto map_it = status_map.find(s);
+		 if (map_it == status_map.end())
+		 {
+			 cout << "A task with a such status does not exist! " << endl;
+			 return;
+		 }
 
-		 for (auto it = s_set.begin(); it != s_set.end(); ++it)
+		 auto set = (*map_it).second;
+		 cout << "Tasks with status " << s << ":\n";
+		 for (auto it = set.begin(); it != set.end(); ++it)
 		 {
 			 cout << *it << "\n";
-			 auto task = tasks[*it];
+			 auto task = tasks.at(*it);
 			 task->TaskShow();
 			 
 		 }
